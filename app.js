@@ -1,11 +1,10 @@
 class Vector4f {
-  constructor(x, y, z, w) {
-    if (w == 1 || w == undefined || w == 0) {
+  constructor(x, y, z, w = 1) {
+    if (w == 0) {
       this.x = x;
       this.y = y;
       this.z = z;
-      if (w == 1 || w == undefined) this.w = 1;
-      else this.w = 0;
+      this.w = w;
     } else {
       this.x = x / w;
       this.y = y / w;
@@ -19,11 +18,11 @@ class Vector4f {
   }
 
   static add(v, u) {
-    return new Vector4f(v.x + u.x, v.y + u.y, v.z + u.z);
+    return new Vector4f(v.x + u.x, v.y + u.y, v.z + u.z, 0);
   }
 
   static scalarProduct(alpha, v) {
-    return new Vector4f(alpha * v.x, alpha * v.y, alpha * v.z);
+    return new Vector4f(alpha * v.x, alpha * v.y, alpha * v.z, 0);
   }
 
   static dotProduct(u, v) {
@@ -34,7 +33,8 @@ class Vector4f {
     return new Vector4f(
       u.y * v.z - u.z * v.y,
       u.z * v.x - u.x * v.z,
-      u.x * v.y - u.y * v.x
+      u.x * v.y - u.y * v.x,
+      0
     );
   }
 
@@ -44,18 +44,19 @@ class Vector4f {
 
   static normalize(v) {
     if (this.length(v) == 0) {
-      alert("The length of the vector is 0 (null vector).");
+      console.error("The length of the vector is 0 (null vector).");
     } else
       return new Vector4f(
         v.x / this.length(v),
         v.y / this.length(v),
-        v.z / this.length(v)
+        v.z / this.length(v),
+        0
       );
   }
 
   static project(u, v) {
     if (this.length(v) == 0) {
-      alert("The length of the second vector is 0 (null vector)");
+      console.error("The length of the second vector is 0 (null vector)");
     } else
       return this.scalarProduct(
         this.dotProduct(u, v) / this.dotProduct(v, v),
@@ -65,7 +66,7 @@ class Vector4f {
 
   static cosPhi(u, v) {
     if (this.length(u) == 0 || this.length(v) == 0) {
-      alert("One of the vectors has a length of 0 (null vector)");
+      console.log("One of the vectors has a length of 0 (null vector)");
     }
     return this.dotProduct(u, v) / (this.length(u) * this.length(v));
   }
@@ -158,7 +159,7 @@ class PointMenager {
 
 class Transformation {
   constructor() {
-    this.t = new Matrix4f(
+    this.transformation = new Matrix4f(
       [1, 0, 0, 0],
       [0, 1, 0, 0],
       [0, 0, 1, 0],
@@ -166,85 +167,74 @@ class Transformation {
     );
   }
   translate(v) {
-    this.t = Matrix4f.multiply(
+    this.transformation = Matrix4f.multiply(
       new Matrix4f(
         [1, 0, 0, v.x],
         [0, 1, 0, v.y],
         [0, 0, 1, v.z],
         [0, 0, 0, 1]
       ),
-      this.t
+      this.transformation
     );
   }
 
   scale(v) {
-    this.t = Matrix4f.multiply(
+    this.transformation = Matrix4f.multiply(
       new Matrix4f(
         [v.x, 0, 0, 0],
         [0, v.y, 0, 0],
         [0, 0, v.z, 0],
         [0, 0, 0, 1]
       ),
-      this.t
+      this.transformation
     );
   }
   rotateX(phi) {
-    this.t = Matrix4f.multiply(
+    this.transformation = Matrix4f.multiply(
       new Matrix4f(
         [1, 0, 0, 0],
         [0, Math.cos(phi), -Math.sin(phi), 0],
         [0, Math.sin(phi), Math.cos(phi), 0],
         [0, 0, 0, 1]
       ),
-      this.t
+      this.transformation
     );
   }
 
   rotateY(phi) {
-    this.t = Matrix4f.multiply(
+    this.transformation = Matrix4f.multiply(
       new Matrix4f(
         [Math.cos(phi), 0, Math.sin(phi), 0],
         [0, 1, 0, 0],
         [-Math.sin(phi), 0, Math.cos(phi), 0],
         [0, 0, 0, 1]
       ),
-      this.t
+      this.transformation
     );
   }
 
   rotateZ(phi) {
-    this.t = Matrix4f.multiply(
+    this.transformation = Matrix4f.multiply(
       new Matrix4f(
         [Math.cos(phi), -Math.sin(phi), 0, 0],
         [Math.sin(phi), Math.cos(phi), 0, 0],
         [0, 0, 1, 0],
         [0, 0, 0, 1]
       ),
-      this.t
+      this.transformation
     );
   }
 
   transformPoint(v) {
-    /*
-    let rez = [];
-    for (let row in this.t) {
-      let temp = [];
-      for (let coord in v) {
-      }
-      rez.push(sum(temp));
-    }
-    return new Vector4f(rez[0], rez[1], rez[2], rez[3]);
-  }
-  */
     let coordinates = [];
     for (let coor in v) {
       coordinates.push(v[coor]);
     }
     return new Vector4f(
-      sum(this.t.row1.map((el, i) => el * coordinates[i])),
-      sum(this.t.row2.map((el, i) => el * coordinates[i])),
-      sum(this.t.row3.map((el, i) => el * coordinates[i])),
-      sum(this.t.row4.map((el, i) => el * coordinates[i]))
+      sum(this.transformation.row1.map((el, i) => el * coordinates[i])),
+      sum(this.transformation.row2.map((el, i) => el * coordinates[i])),
+      sum(this.transformation.row3.map((el, i) => el * coordinates[i])),
+      sum(this.transformation.row4.map((el, i) => el * coordinates[i]))
     );
   }
 }
@@ -263,9 +253,6 @@ class TransformPoints {
     PointMenager.printOutput(
       points.map((point) => transformation.transformPoint(point))
     );
-    for (let x of points) {
-      console.log(transformation.transformPoint(x));
-    }
   }
 }
 
