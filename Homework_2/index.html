@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Homework 2</title>
+  </head>
+  <body>
+    <style type="text/css">
+      canvas {
+        border-style: dashed;
+        border-width: 2px;
+        border-color: darkgray;
+      }
+      label {
+        font: 1rem "Fira Sans", sans-serif;
+        align-self: left;
+      }
+      #mainlabel {
+        text-align: right;
+        font: 1rem "Fira Sans", sans-serif;
+        font-weight: bolder;
+      }
+
+      input {
+        margin: 0.4rem;
+      }
+    </style>
+    <canvas id="canvas"></canvas>
+    <form>
+      <label id="mainlabel" for="mode">Mode:</label>
+      <div id="mode">
+        <input type="radio" id="draw" name="mode" value="draw" checked />
+        <label for="draw">Draw</label>
+        <input type="radio" id="move" name="mode" value="move" />
+        <label for="move">Move</label>
+        <input type="radio" id="select" name="mode" value="select" />
+        <label for="select">Select</label>
+      </div>
+      <div>
+        <button id="newCurve" name="newCurve" type="button">New Curve</button>
+        <button id="delete" name="delete" type="button">Delete selected</button>
+        <div>
+          <label for="colorpicker">Color Picker:</label>
+          <input type="color" id="colorpicker" value="#FF0000" />
+        </div>
+      </div>
+      <script src="app.js"></script>
+    </form>
+  </body>
+</html>
