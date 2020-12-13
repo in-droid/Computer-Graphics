@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Homework 3</title>
+  <style>
+    body {
+      width:  100%;
+      height: 100%;
+      overflow: hidden;
+      margin: 0;
+      }
+    #grid {
+      position: absolute;
+      top: 1%;
+      left: 0%;
+    }
+    #ballNumber{
+      position: absolute;
+      top: 1%;
+      left: 2%;
+      width: 4%;
+    }
+  </style>
+</head>
+<body>
+  <input type="checkbox" id="grid" name="grid">
+  <input type="number" id="ballNumber" min=0>
+  <canvas id="canvas"></canvas>
+  <script src="quadtree.js"></script>
+</body>
+</html>
