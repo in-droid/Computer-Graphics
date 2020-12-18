@@ -1,0 +1,179 @@
+{
+    "asset" : {
+        "generator" : "Khronos glTF Blender I/O v1.4.40",
+        "version" : "2.0"
+    },
+    "scene" : 0,
+    "scenes" : [
+        {
+            "name" : "Scene",
+            "nodes" : [
+                1,
+                2
+            ]
+        }
+    ],
+    "nodes" : [
+        {
+            "camera" : 0,
+            "name" : "Camera",
+            "rotation" : [
+                -0.7071067690849304,
+                0,
+                0,
+                0.7071067690849304
+            ]
+        },
+        {
+            "children" : [
+                0
+            ],
+            "name" : "",
+            "rotation" : [
+                0.649215042591095,
+                0.2802138924598694,
+                -0.2802139222621918,
+                0.649215042591095
+            ],
+            "translation" : [
+                8.938340187072754,
+                4.958309173583984,
+                11.05587100982666
+            ]
+        },
+        {
+            "mesh" : 0,
+            "name" : "Plane",
+            "scale" : [
+                14.122125625610352,
+                14.122125625610352,
+                14.122125625610352
+            ]
+        }
+    ],
+    "cameras" : [
+        {
+            "name" : "Camera",
+            "perspective" : {
+                "aspectRatio" : 1.7777777777777777,
+                "yfov" : 0.39959652046304894,
+                "zfar" : 100,
+                "znear" : 0.10000000149011612
+            },
+            "type" : "perspective"
+        }
+    ],
+    "materials" : [
+        {
+            "doubleSided" : true,
+            "name" : "Material.001",
+            "pbrMetallicRoughness" : {
+                "baseColorTexture" : {
+                    "index" : 0,
+                    "texCoord" : 0
+                },
+                "metallicFactor" : 0,
+                "roughnessFactor" : 0.5
+            }
+        }
+    ],
+    "meshes" : [
+        {
+            "name" : "Plane",
+            "primitives" : [
+                {
+                    "attributes" : {
+                        "POSITION" : 0,
+                        "NORMAL" : 1,
+                        "TEXCOORD_0" : 2
+                    },
+                    "indices" : 3,
+                    "material" : 0
+                }
+            ]
+        }
+    ],
+    "textures" : [
+        {
+            "sampler" : 0,
+            "source" : 0
+        }
+    ],
+    "images" : [
+        {
+            "mimeType" : "image/jpeg",
+            "name" : "cement",
+            "uri" : "cement.jpg"
+        }
+    ],
+    "accessors" : [
+        {
+            "bufferView" : 0,
+            "componentType" : 5126,
+            "count" : 301,
+            "max" : [
+                1,
+                0.8579705953598022,
+                1
+            ],
+            "min" : [
+                -1,
+                0,
+                -1
+            ],
+            "type" : "VEC3"
+        },
+        {
+            "bufferView" : 1,
+            "componentType" : 5126,
+            "count" : 301,
+            "type" : "VEC3"
+        },
+        {
+            "bufferView" : 2,
+            "componentType" : 5126,
+            "count" : 301,
+            "type" : "VEC2"
+        },
+        {
+            "bufferView" : 3,
+            "componentType" : 5123,
+            "count" : 792,
+            "type" : "SCALAR"
+        }
+    ],
+    "bufferViews" : [
+        {
+            "buffer" : 0,
+            "byteLength" : 3612,
+            "byteOffset" : 0
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 3612,
+            "byteOffset" : 3612
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 2408,
+            "byteOffset" : 7224
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 1584,
+            "byteOffset" : 9632
+        }
+    ],
+    "samplers" : [
+        {
+            "magFilter" : 9729,
+            "minFilter" : 9986
+        }
+    ],
+    "buffers" : [
+        {
+            "byteLength" : 11216,
+            "uri" : "level1.bin"
+        }
+    ]
+}
