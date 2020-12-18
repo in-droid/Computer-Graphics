@@ -1,4 +1,4 @@
-import Application from '../../common/Application.js';
+import Application from '../common/Application.js';
 import * as WebGL from './WebGL.js';
 import GLTFLoader from './GLTFLoader.js';
 import Renderer from './Renderer.js';
@@ -13,7 +13,7 @@ class App extends Application {
     async start() {
 
         this.loader = new GLTFLoader();
-        await this.loader.load('../../common/models/testMovement/testMovement.gltf');
+        await this.loader.load('../common/models/testMovement/testMovement.gltf');
 
         this.scene = await this.loader.loadScene(this.loader.defaultScene);
         this.camera = await this.loader.loadNode('Camera');
