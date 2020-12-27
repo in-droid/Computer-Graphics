@@ -34,4 +34,11 @@ export default class Scene {
             nodes: this.nodes.map(node => node.clone()),
         });
     }
+
+    removeNode(node) {
+        let index = this.nodes.indexOf(node);
+        if(index !== -1) {
+            this.nodes.splice(index, 1);
+        }
+    }
 }

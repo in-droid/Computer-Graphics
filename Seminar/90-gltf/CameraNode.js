@@ -1,45 +1,55 @@
 import Node from './Node.js';
 import MathTools from './MathTools.js';
+import Physics from './Physics.js';
 
 const vec3 = glMatrix.vec3;
 const mat4 = glMatrix.mat4;
 const quat = glMatrix.quat;
 
 export default class CameraNode extends Node {
-
+    static inAir = false;
     constructor(options) {
         super(options);
         Object.assign(this, options);
+        this.currentHeight = this.translation[2];
+        this.startHeight = this.translation[2];
 
         this.velocity = [0, 0, 0];
         this.mouseSensitivity = 0.01;
-        this.maxSpeed = 10;
-        this.friction = 1;
-        this.acceleration = 50;
+        this.maxSpeed = 5;
+        this.friction = 0.2;
+        this.acceleration = 20;
         this.rotationAngle = [-90, 0, 0];
+
+        this.jump = vec3.set(vec3.create(), 0, 0, -10);
+        this.jumpCond = 0;
 
         this.mousemoveHandler = this.mousemoveHandler.bind(this);
         this.keydownHandler = this.keydownHandler.bind(this);
         this.keyupHandler = this.keyupHandler.bind(this);
         this.keys = {};
+        this.aabb = {
+            min : [- 2 , -2 , -2],
+            max : [2 , 2 , 2]
+        }
 
-        this.camera.updateMatrix();
+        //this.camera.updateMatrix();
     }
 
     update(dt) {
         const c = this;
-       // console.log(c.translation);
-       // console.log(c.rotationAngle);
+
         const forward = vec3.set(vec3.create(),
             Math.sin(MathTools.degToRad(c.rotationAngle[1])),
             -Math.cos(MathTools.degToRad(c.rotationAngle[1])),
             0);
-        //const forward = vec3.set(vec3.create(), 0, MathTools.degToRad(c.rotationAngle[1]), 0);
 
-            const right = vec3.set(vec3.create(),
+
+        const right = vec3.set(vec3.create(),
             Math.cos(MathTools.degToRad(c.rotationAngle[1])),
             Math.sin(MathTools.degToRad(c.rotationAngle[1])),
             0);
+
 
         // 1: add movement acceleration
         let acc = vec3.create();
@@ -55,7 +65,21 @@ export default class CameraNode extends Node {
         if (this.keys['KeyA']) {
             vec3.sub(acc, acc, right);
         }
+        if(this.keys['Space'] && this.jumpCond < 2) {
+            vec3.add(acc, acc, this.jump);
+            this.jumpCond++;
+            CameraNode.inAir = true;
+        }
+        
+        if(c.translation[2]  < this.currentHeight) {
+            vec3.add(acc, acc, Physics.CAMERA_GRAVITY);
+        }
 
+        else {
+            this.jumpCond = 0;
+           // vec3.set(c.translation, c.translation[0], c.translation[1], c.currentHeight);
+            CameraNode.inAir = false;
+        }
         // 2: update velocity
         vec3.scaleAndAdd(c.velocity, c.velocity, acc,
                         dt * c.acceleration);
@@ -75,7 +99,7 @@ export default class CameraNode extends Node {
             vec3.scale(c.velocity, c.velocity, c.maxSpeed / len);
         }
         vec3.scaleAndAdd(c.translation, c.translation, c.velocity, dt);
-        //c.updateTransform();
+        c.updateMatrix();
 
         }
 
