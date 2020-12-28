@@ -19,7 +19,7 @@
     "nodes" : [
         {
             "camera" : 0,
-            "name" : "Camera_Orientation",
+            "name" : "Camera",
             "rotation" : [
                 -0.7071067690849304,
                 0,
@@ -31,7 +31,7 @@
             "children" : [
                 0
             ],
-            "name" : "Camera",
+            "name" : "",
             "rotation" : [
                 0.5322691798210144,
                 -0.465652197599411,
@@ -113,7 +113,7 @@
             "name" : "Camera",
             "perspective" : {
                 "aspectRatio" : 1.7777777777777777,
-                "yfov" : 1.2522734086929386,
+                "yfov" : 0.5954004346490906,
                 "zfar" : 100,
                 "znear" : 0.0010000000474974513
             },
