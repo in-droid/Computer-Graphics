@@ -6,8 +6,11 @@ const vec3 = glMatrix.vec3;
 const mat4 = glMatrix.mat4;
 const quat = glMatrix.quat;
 
+
 export default class CameraNode extends Node {
     static inAir = false;
+
+    static Wall_Width = 1.9;
     constructor(options) {
         super(options);
         Object.assign(this, options);
@@ -16,27 +19,29 @@ export default class CameraNode extends Node {
 
         this.velocity = [0, 0, 0];
         this.mouseSensitivity = 0.01;
-        this.maxSpeed = 5;
+        this.maxSpeed = 10;
         this.friction = 0.2;
-        this.acceleration = 20;
+        this.acceleration = 50;
         this.rotationAngle = [-90, 0, 0];
 
         this.jump = vec3.set(vec3.create(), 0, 0, -10);
         this.jumpCond = 0;
+
+        this.gravity = false;
 
         this.mousemoveHandler = this.mousemoveHandler.bind(this);
         this.keydownHandler = this.keydownHandler.bind(this);
         this.keyupHandler = this.keyupHandler.bind(this);
         this.keys = {};
         this.aabb = {
-            min : [- 2 , -2 , -2],
-            max : [2 , 2 , 2]
+            min : [- 2, - 2, - 2],
+            max : [2, 2, 2]
         }
 
         //this.camera.updateMatrix();
     }
 
-    update(dt) {
+    update(dt, plane) {
         const c = this;
 
         const forward = vec3.set(vec3.create(),
@@ -70,16 +75,23 @@ export default class CameraNode extends Node {
             this.jumpCond++;
             CameraNode.inAir = true;
         }
-        
-        if(c.translation[2]  < this.currentHeight) {
-            vec3.add(acc, acc, Physics.CAMERA_GRAVITY);
+
+        if(c.translation[2] < this.currentHeight) {
+            //this.gravity = true;
+        }
+        else {
+           // this.gravity = false;
         }
 
+        if(c.translation[2] + Physics.CAMERA_GRAVITY[2] < this.currentHeight) {
+            vec3.add(acc, acc, Physics.CAMERA_GRAVITY);
+            this.gravity = true;
+        }
         else {
             this.jumpCond = 0;
-           // vec3.set(c.translation, c.translation[0], c.translation[1], c.currentHeight);
             CameraNode.inAir = false;
         }
+
         // 2: update velocity
         vec3.scaleAndAdd(c.velocity, c.velocity, acc,
                         dt * c.acceleration);
@@ -99,9 +111,40 @@ export default class CameraNode extends Node {
             vec3.scale(c.velocity, c.velocity, c.maxSpeed / len);
         }
         vec3.scaleAndAdd(c.translation, c.translation, c.velocity, dt);
-        c.updateMatrix();
-
+        //c.updateTransform();
+        if(c.translation[2] > this.currentHeight) {
+            c.translation[2] = this.currentHeight;
         }
+
+        const ta = c.getGlobalTransform();
+        const posa = mat4.getTranslation(vec3.create(), ta);
+        let diff;
+        const temp = vec3.create();
+        if(posa[0] <  (plane.aabb.min[0] * 2 + CameraNode.Wall_Width)) {
+           diff = plane.aabb.min[0] * 2 + CameraNode.Wall_Width - posa[0];
+           vec3.set(temp, diff, 0, 0);
+        }
+
+        if(posa[2] < plane.aabb.min[2]  * 2 + CameraNode.Wall_Width) {
+            diff = plane.aabb.min[2] * 2 + CameraNode.Wall_Width  - posa[2];
+            vec3.set(temp, 0, diff, 0);
+        }
+
+        if(posa[0] >  plane.aabb.max[0] * 2 - CameraNode.Wall_Width) {
+            diff = plane.aabb.max[0] * 2 - CameraNode.Wall_Width - posa[0];
+            vec3.set(temp, diff, 0, 0);
+            console.log("da");
+        }
+        vec3.add(c.translation, c.translation, temp);
+
+        if(posa[2]  > plane.aabb.max[2] * 2 - CameraNode.Wall_Width) {
+           diff = plane.aabb.max[2] * 2 - CameraNode.Wall_Width - posa[2];
+           vec3.set(temp, 0, diff, 0);
+        }
+        vec3.add(c.translation, c.translation, temp);
+       c.updateMatrix();
+        }
+        
 
     enable() {
         document.addEventListener('mousemove', this.mousemoveHandler);
@@ -137,24 +180,9 @@ export default class CameraNode extends Node {
             rotacija[0] = 0;
         }
 
-        //const axis = quat.create();
-       // quat.fromEuler(axis, -90, 0, 0);
-
         quat.fromEuler(c.rotation, rotacija[0], 0, rotacija[1]);
         rotacija[1] = ((rotacija[1] % MathTools.radToDeg(twopi))
                        + MathTools.radToDeg(twopi)) % MathTools.radToDeg(twopi);
-        /*
-        if(angle < halfpi){
-            quat.rotateX(c.rotation, c.rotation, xMovement);
-        }
-        else {
-            quat.rotateX(c.rotationTemp, c.rotationTemp, -xMovement);
-        }
-        c.updateMatrix();
-       // quat.rotateY(c.rotation, c.rotation, -dx*c.defaults.mouseSensitivity);
-        //c.updateTransform();
-        c.updateMatrix();
-        */
     }
     keydownHandler(e) {
         this.keys[e.code] = true;

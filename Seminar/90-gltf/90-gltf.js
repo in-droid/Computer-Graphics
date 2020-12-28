@@ -16,6 +16,35 @@ class App extends Application {
         this.cond = true;
         this.loader = new GLTFLoader();
         this.c =0;
+        await this.loader.load('../../common/models/test1/scenery.gltf');
+        this.scene = await this.loader.loadScene(this.loader.defaultScene);
+        this.camera = await this.loader.loadNode('Camera');
+        this.plane = await this.loader.loadNode('Plane');
+        this.scenery = new Set();
+        this.scenery.add(this.plane);
+        this.scenery.add(await this.loader.loadNode('WallN'));
+        this.scenery.add(await this.loader.loadNode('WallS'));
+        this.scenery.add(await this.loader.loadNode('WallW'));
+        this.scenery.add(this.loader.loadNode('WallE'));
+        this.plane.isPlane = true;
+        this.scene.addNode(this.camera);
+       /*
+       await this.loader.load('../../common/models/test1/test1.gltf');
+       this.scene = await this.loader.loadScene(this.loader.defaultScene);
+       this.camera = await this.loader.loadNode('Camera');
+       this.plane = await this.loader.loadNode('Plane');
+       this.scene.addNode(this.camera);
+
+       await this.loader.load('../../common/models/test1/obsticles.gltf');
+       //this.obsticles = await this.loader.loadScene(this.loader.defaultScene);
+      // console.log(this.obsticles);
+       if(this.obsticles) {
+            for(const obst of this.obsticles.nodes) {
+                this.scene.addNode(obst);
+            }
+            */
+
+        /*
         await this.loader.load('../../common/models/phy/cube/cube.gltf');
         this.cube = await this.loader.loadScene(this.loader.defaultScene);
         this.cube = await this.loader.loadNode('Cube');
@@ -33,40 +62,14 @@ class App extends Application {
         this.scene.addNode(this.camera);
         this.scene.addNode(this.cube);
         this.scene.addNode(this.cube2);
-
-        for(const node of this.scene.nodes){
-            if(node.children[0] instanceof CameraNode){
+        */
+        for(const node of this.scene.nodes) {
+            if(node.children && node.children[0] instanceof CameraNode){
                 node.isCameraParent = true;
             }
         }
-        /*
-        if(this.camera) {
-            vec3.set(this.camera.translation, 0, 0, -2.5);
-            this.camera.updateMatrix();
-        }
-        */
 
-        //this.cube = await this.loader.loadNode('Cube');
-        //console.log(this.cube);
-
-        //this.camera = await this.loader.loadNode('Camera');
-
-       // console.log(this.camera);
-       // this.camera.updateMatrix();
-       //this.scene.addNode(this.camera);
-        //this.scene.addNode(this.camera);
-        //this.cube = await this.loader.loadNode('Cube');
-        //this.cube.isCube = true;
-        //this.plane = await this.loader.loadNode('Plane');
-        //this.plane.plane = true;
-        //this.scene.removeNode(this.plane);
-        //this.camera = new CameraNode(this.camera);
-        //this.scene.addNode(this.camera);
-        this.physics = new Physics(this.scene,  this.plane);
-
-        //this.scene.splice()
-        //console.log(this.camera);
-
+        this.physics = new Physics(this.scene,  this.scenery);
 
         if (!this.scene || !this.camera) {
             throw new Error('Scene or Camera not present in glTF');
@@ -114,9 +117,14 @@ class App extends Application {
        // console.log(this.startTime);
         const dt = (this.time - this.startTime) * 0.001;
         if(this.camera) {
-            console.log(this.camera.translation);
             this.startTime = this.time;
-            this.camera.update(dt);
+            this.camera.update(dt, this.plane);
+            const ta = this.camera.getGlobalTransform();
+            const posa = mat4.getTranslation(vec3.create(), ta);
+            console.log(posa);
+            console.log(this.plane.aabb);
+
+           // console.log(this.camera.currentHeight);
            }
 
         if (this.physics) {

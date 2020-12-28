@@ -7,9 +7,9 @@ export default class Physics {
 
     static CAMERA_GRAVITY = vec3.set(vec3.create(), 0, 0, 0.8);
 
-    constructor(scene, plane) {
+    constructor(scene, scenery) {
         this.scene = scene;
-        this.plane = plane;
+        this.scenery = scenery;
         this.wl = new Set();
     }
 
@@ -25,12 +25,11 @@ export default class Physics {
     update(dt) {
         this.scene.traverse(node => {
             if (node.velocity) {
-                //console.log(node);
                 vec3.scaleAndAdd(node.translation, node.translation, node.velocity, dt);
                 node.updateTransform();
                 this.scene.traverse(other => {
                     // const check = this.whiteList(other);
-                    if (node !== other && other !== this.plane && !other.isCameraParent) {
+                    if (node !== other && !this.scenery.has(other) && !other.isCameraParent) {
                         this.resolveCollision(node, other);
                     }
                 });
@@ -106,8 +105,7 @@ export default class Physics {
             }
             return;
         }
-
-        // Move node A minimally to avoid collision.
+        console.log("DAAA");
         const diffa = vec3.sub(vec3.create(), maxb, mina);
         const diffb = vec3.sub(vec3.create(), maxa, minb);
 
@@ -139,8 +137,7 @@ export default class Physics {
         }
         
         const temp = minDirection[2];
-       // minDirection[2] = minDirection[1];
-       minDirection[2] = 0;
+        minDirection[2] = 0;
         minDirection[1] = temp;
         vec3.add(a.translation, a.translation, minDirection);
         a.updateMatrix();
