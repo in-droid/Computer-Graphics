@@ -1,0 +1,65 @@
+@import url(https://fonts.googleapis.com/css?family=Open+Sans);
+body, html {
+    height: 100%;
+    margin: 0;
+}
+
+.bg {
+    background-image: url("./common/images/background.jpeg");
+    height: 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+
+
+
+
+a {
+    color: black;
+    text-decoration: none;
+    padding: 10px;
+}
+
+a:hover {
+    background: #ddd;
+}
+
+#play {
+    position: fixed;
+    font-family: "Open Sans", Impact;
+    top: 50%;
+    left: 42%;
+    font-weight: 700;
+    font-size: 100px;
+}
+
+#howto {
+    position: fixed;
+    font-family: "Open Sans", Impact;
+    bottom: 10%;
+    left: 5%;
+    color: #fff;
+    text-shadow: 0px 0px 5px #fff, 0px 0px 7px #fff;
+
+}
+
+
+body {
+ background: #111;
+ font-family: "Open Sans",  Impact;
+}
+
+.area {
+  position: fixed;
+  top: 20%;
+  left: 22%;
+  text-align: center;
+  font-size: 5.5em;
+  color: #fff;
+  letter-spacing: -7px;
+  font-weight: 700;
+  text-transform: uppercase;
+  animation: blur .75s ease-out infinite;
+  text-shadow: 0px 0px 5px #fff, 0px 0px 7px #fff;
+}
