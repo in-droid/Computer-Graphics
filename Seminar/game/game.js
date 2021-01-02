@@ -17,21 +17,21 @@ class App extends Application {
         0: {
             END_TIME: 35,
             FINISH_COORD : [23.7616, 26.409467, -1.840168],
-            SCENE : '../../common/models/test1/scenery.gltf',
+            SCENE : '../common/models/test1/scenery.gltf',
             GENERATOR : [-15, -15, 0],
             WALL_WIDTH : 1.9,
         },
         1 : {
             END_TIME : 20,
             FINISH_COORD : [23.7616, 26.409467, -1.840168],
-            SCENE : '../../common/models/test1/scenery.gltf',
+            SCENE : '../common/models/test1/scenery.gltf',
             GENERATOR : [-15, -15, 0],
             WALL_WIDTH : 1.9,
         },
         2 : {
             END_TIME : 15,
             FINISH_COORD : [23.7616, 26.409467, -1.840168],
-            SCENE : '../../common/models/test1/scenery.gltf',
+            SCENE : '../common/models/test1/scenery.gltf',
             GENERATOR : [-15, -15, 0],
             WALL_WIDTH : 1.9,
 
