@@ -56,7 +56,7 @@ class App extends Application {
         this.taskComplete = false;
 
         this.loader = new GLTFLoader();
-        await this.loader.load('../../common/models/test1/scenery.gltf');
+        await this.loader.load('../common/models/test1/scenery.gltf');
         this.scene = await this.loader.loadScene(this.loader.defaultScene);
         this.camera = await this.loader.loadNode('Camera');
         this.plane = await this.loader.loadNode('Plane');
