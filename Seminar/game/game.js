@@ -1,4 +1,4 @@
-import Application from '../../common/Application.js';
+import Application from '../common/Application.js';
 import GLTFLoader from './GLTFLoader.js';
 import Renderer from './Renderer.js';
 import Physics from './Physics.js';
