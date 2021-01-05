@@ -37,7 +37,6 @@ export default class CameraNode extends Node {
             max : [2, 2, 2]
         }
 
-        //this.camera.updateMatrix();
     }
 
     update(dt, plane, currentLvl) {
@@ -134,7 +133,7 @@ export default class CameraNode extends Node {
         }
         vec3.add(c.translation, c.translation, temp);
         c.updateMatrix();
-        return MathTools.checkEquality(posa, currentLvl.FINISH_COORD, 1);
+        return MathTools.ifClose(posa, currentLvl.FINISH_COORD, 1);
     }
 
     enable() {
@@ -175,6 +174,7 @@ export default class CameraNode extends Node {
         rotacija[1] = ((rotacija[1] % MathTools.radToDeg(twopi))
                        + MathTools.radToDeg(twopi)) % MathTools.radToDeg(twopi);
     }
+
     keydownHandler(e) {
         this.keys[e.code] = true;
     }
@@ -182,6 +182,4 @@ export default class CameraNode extends Node {
     keyupHandler(e) {
         this.keys[e.code] = false;
     }
-
-    
 }

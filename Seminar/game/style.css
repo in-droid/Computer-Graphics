@@ -77,3 +77,12 @@ a.back:hover {
   font-size: 20px;
   color:darkorange;
 }
+
+#currentlvl {
+  position: fixed;
+  bottom: 5%;
+  right: 2%;
+  font-size: 20px;
+  color:darkorange;
+
+}

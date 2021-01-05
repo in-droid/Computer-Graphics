@@ -226,10 +226,10 @@ export default class Renderer {
                 gl.uniform1i(program.uniforms.uAnimated, 0);
             }
             const change = Math.cos(t) ** 2 * 2;
+
             gl.uniform1f(program.uniforms.uChange, change);
-           // console.log(program);
-           // const program = this.programs.simple;
             gl.uniformMatrix4fv(program.uniforms.uMvpMatrix, false, mvpMatrix);
+
             for (const primitive of node.mesh.primitives) {
                 this.renderPrimitive(primitive);
             }

@@ -1,5 +1,3 @@
-import Node from './Node.js';
-
 export default class Scene {
 
     constructor(options = {}) {

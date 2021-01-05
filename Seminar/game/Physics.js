@@ -1,5 +1,3 @@
-//import CameraNode from "./CameraNode";
-
 const vec3 = glMatrix.vec3;
 const mat4 = glMatrix.mat4;
 
@@ -20,7 +18,6 @@ export default class Physics {
                 vec3.scaleAndAdd(node.translation, node.translation, node.velocity, dt);
                 node.updateTransform();
                 this.scene.traverse(other => {
-                    // const check = this.whiteList(other);
                     if (node !== other && !this.scenery.has(other) && !other.isCameraParent) {
                         this.resolveCollision(node, other);
                     }
@@ -34,7 +31,6 @@ export default class Physics {
     }
 
     aabbIntersection(aabb1, aabb2) {
-        //console.log(aabb1.min[0]);
         return this.intervalIntersection(aabb1.min[0], aabb1.max[0], aabb2.min[0], aabb2.max[0])
             && this.intervalIntersection(aabb1.min[1], aabb1.max[1], aabb2.min[1], aabb2.max[1])
             && this.intervalIntersection(aabb1.min[2], aabb1.max[2], aabb2.min[2], aabb2.max[2]);
@@ -46,13 +42,9 @@ export default class Physics {
     }
 
     resolveCollision(a, b) {
-        //console.log("ZORAN ZAEV");
-        // Update bounding boxes with global translation.
-       const ta = a.getGlobalTransform();
-       const tb = b.getGlobalTransform();
-       //const ta = a.matrix;
-       //const tb = b.matrix;
-       // console.log(ta, tb);
+        const ta = a.getGlobalTransform();
+        const tb = b.getGlobalTransform();
+
         const posa = mat4.getTranslation(vec3.create(), ta);
         const posb = mat4.getTranslation(vec3.create(), tb);
 
@@ -98,6 +90,7 @@ export default class Physics {
         const diffa = vec3.sub(vec3.create(), maxb, mina);
         const diffb = vec3.sub(vec3.create(), maxa, minb);
 
+
         let minDiff = Infinity;
         let minDirection = [0, 0, 0];
         if (diffa[0] >= 0 && diffa[0] < minDiff) {
@@ -124,7 +117,7 @@ export default class Physics {
             minDiff = diffb[2];
             minDirection = [0, 0, -minDiff];
         }
-        
+
         const temp = minDirection[2];
         minDirection[2] = 0;
         minDirection[1] = temp;
